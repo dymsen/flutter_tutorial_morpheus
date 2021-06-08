@@ -15,9 +15,31 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: buildDrawerExample()//MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+}
+
+Widget buildDrawerExample() {
+  final drawerElements = ListView(
+    children: [
+      ListTile(title: Text("Dashboard"),),
+      Divider(),
+      ListTile(title: Text("Impressum"),),
+    ]
+  );
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Nag Bar Example"),
+      ),
+    body: Center(
+      child: Text("Draw me!"),
+      ),
+      drawer: Drawer(
+        child: drawerElements,
+      ),
+  );
+
 }
 
 class MyHomePage extends StatefulWidget {
@@ -39,61 +61,54 @@ class _MyAppState extends State<MyHomePage> {
       title: title,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
         ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text(title),
-            ),
-            body: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return Dismissible(
-                 key: Key(item),
-                 child:  ListTile(
-                  title: Text('$item'),
-                ),
-                background: Container(
-                  child: Icon(Icons.delete),
-                  color: Colors.red,
-                  alignment: Alignment.centerLeft ,
-                  padding: EdgeInsets.only(left: 30),
-                  ),
-                  secondaryBackground: Container(
-                  child: Icon(Icons.save),
-                  color: Colors.green,
-                  alignment: Alignment.centerRight ,
-                  padding: EdgeInsets.only(right: 30),
-                  ),
-                  onDismissed: (direction){
-                    setState(() {
-                      items.removeAt(index);
-
-                    });
-                    String msg = "deleted";
-                    if(direction == DismissDirection.startToEnd){
-                      msg = "deleted";
-                    }
-                    else if(direction == DismissDirection.endToStart){
-                      msg = "saved";
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("$item $msg")
-                         ,
-                         )
-                         );
-                  },
-                 );
-            
-              },
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return Dismissible(
+              key: Key(item),
+              child: ListTile(
+                title: Text('$item'),
               ),
-            ),
+              background: Container(
+                child: Icon(Icons.delete),
+                color: Colors.red,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 30),
+              ),
+              secondaryBackground: Container(
+                child: Icon(Icons.save),
+                color: Colors.green,
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 30),
+              ),
+              onDismissed: (direction) {
+                setState(() {
+                  items.removeAt(index);
+                });
+                String msg = "deleted";
+                if (direction == DismissDirection.startToEnd) {
+                  msg = "deleted";
+                } else if (direction == DismissDirection.endToStart) {
+                  msg = "saved";
+                }
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("$item $msg"),
+                ));
+              },
+            );
+          },
+        ),
+      ),
     );
   }
-
-
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -122,39 +137,37 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             MyButton(_counter)
-                      ],
-                    ),
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: _incrementCounter,
-                    tooltip: 'Increment',
-                    child: Icon(Icons.add),
-                  ), // This trailing comma makes auto-formatting nicer for build methods.
-                );
-              }
-            }
-            
-            class MyButton extends StatelessWidget {
-              int counter;
-              MyButton (int this.counter);
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
 
-              @override
-              Widget build(BuildContext context) {
-                return 
-                 InkWell(
-                   onTap: (){
-                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Diese Zahl ist kleiner als Drölf.")
-                     ,
-                     )
-                     );                    
-                   },
-                   child: Container(
-                     padding: EdgeInsets.all(12),
-                    child: Text('$counter',
-                    style: Theme.of(context).textTheme.headline4,
-                    ), 
-                  ),
-                 );
-              }
+class MyButton extends StatelessWidget {
+  int counter;
+  MyButton(int this.counter);
 
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Diese Zahl ist kleiner als Drölf."),
+        ));
+      },
+      child: Container(
+        padding: EdgeInsets.all(12),
+        child: Text(
+          '$counter',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      ),
+    );
+  }
 }
