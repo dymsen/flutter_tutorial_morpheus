@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,36 +12,92 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: buildDrawerExample()//MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: DrawerExample() //MyHomePage(title: 'Flutter Demo Home Page'),
+        );
   }
 }
 
-Widget buildDrawerExample() {
-  final drawerElements = ListView(
-    children: [
-      ListTile(title: Text("Dashboard"),),
-      Divider(),
-      ListTile(title: Text("Impressum"),),
-    ]
-  );
-  return Scaffold(
-    appBar: AppBar(
-      title: Text("Nag Bar Example"),
-      ),
-    body: Center(
-      child: Text("Draw me!"),
-      ),
-      drawer: Drawer(
-        child: drawerElements,
-      ),
-  );
+class DrawerExample extends StatefulWidget {
+  const DrawerExample({
+    Key key,
+    this.restorationId}): super(key: key);
 
+  final String restorationId;
+
+  @override
+  State<StatefulWidget> createState() => _DrawerExampleState();
+}
+
+class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
+  final RestorableInt _currentIndex = RestorableInt(0);
+
+  @override
+  Widget build(BuildContext context) {
+    final drawerElements = ListView(children: [
+      UserAccountsDrawerHeader(
+        accountName: Text("Andi"),
+        accountEmail: Text("Danke fürs Zusehen"),
+        currentAccountPicture: const CircularProgressIndicator(
+          backgroundColor: Colors.black,
+        ),
+      ),
+      Divider(),
+      ListTile(
+        title: Text("Dashboard"),
+        onTap: () {
+          print("Tapped");
+        },
+      ),
+      Divider(),
+      ListTile(
+        title: Text("Impressum"),
+      ),
+    ]);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Nag Bar Example"),
+        ),
+        body: Center(
+          child: InkWell(
+            onTap: () {
+              print("InkWell");
+            },
+            child: Text("Draw me!"),
+          ),
+        ),
+        drawer: Drawer(
+          child: drawerElements,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: false,
+          items: [
+            BottomNavigationBarItem(
+                icon: const Icon(Icons.account_box), label: "Acccount"),
+            BottomNavigationBarItem(
+                icon: const Icon(Icons.alarm), label: "Alarm"),
+          ],
+          currentIndex: _currentIndex.value,
+          onTap: (index) {
+            setState(() {
+              _currentIndex.value = index;
+            });
+          },
+        )
+        );
+  }
+
+  @override
+  String get restorationId => widget.restorationId;
+
+  @override
+  void restoreState(RestorationBucket oldBucket, bool initialRestore) {
+    registerForRestoration(_currentIndex, 'buttom_navigation_tab_index');
+  }
 }
 
 class MyHomePage extends StatefulWidget {
