@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class DrawerExample extends StatefulWidget {
-  const DrawerExample({
-    Key key,
-    this.restorationId}): super(key: key);
+  const DrawerExample({Key key, this.restorationId}) : super(key: key);
 
   final String restorationId;
 
@@ -58,6 +56,11 @@ class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
         title: Text("Impressum"),
       ),
     ]);
+    var bottomNavBarItems = [
+      BottomNavigationBarItem(
+          icon: const Icon(Icons.account_box), label: "Acccount"),
+      BottomNavigationBarItem(icon: const Icon(Icons.alarm), label: "Alarm"),
+    ];
     return Scaffold(
         appBar: AppBar(
           title: Text("Nag Bar Example"),
@@ -67,7 +70,10 @@ class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
             onTap: () {
               print("InkWell");
             },
-            child: Text("Draw me!"),
+            child: Center(
+                child: _MyBottomNavView(
+                    key: UniqueKey(),
+                    item: bottomNavBarItems[_currentIndex.value])),
           ),
         ),
         drawer: Drawer(
@@ -75,20 +81,14 @@ class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
         ),
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: false,
-          items: [
-            BottomNavigationBarItem(
-                icon: const Icon(Icons.account_box), label: "Acccount"),
-            BottomNavigationBarItem(
-                icon: const Icon(Icons.alarm), label: "Alarm"),
-          ],
+          items: bottomNavBarItems,
           currentIndex: _currentIndex.value,
           onTap: (index) {
             setState(() {
               _currentIndex.value = index;
             });
           },
-        )
-        );
+        ));
   }
 
   @override
@@ -97,6 +97,17 @@ class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
   @override
   void restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_currentIndex, 'buttom_navigation_tab_index');
+  }
+}
+
+class _MyBottomNavView extends StatelessWidget {
+  _MyBottomNavView({Key key, this.item}) : super(key: key);
+  final BottomNavigationBarItem item;
+
+  
+  @override
+  Widget build(BuildContext context) {
+    return Text(item.label);
   }
 }
 
