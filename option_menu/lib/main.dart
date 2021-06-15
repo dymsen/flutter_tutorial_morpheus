@@ -63,7 +63,30 @@ class _DrawerExampleState extends State<DrawerExample> with RestorationMixin {
     ];
     return Scaffold(
         appBar: AppBar(
-          title: Text("Nag Bar Example"),
+          title: Text("Nav Bar Example"),
+          actions: [
+            PopupMenuButton(
+              padding: EdgeInsets.zero,
+              onSelected: (value) => print(value),
+              itemBuilder: (context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: "Teilen",
+                  child: ListTile(
+                    leading: const Icon(Icons.share),
+                    title: Text("Teilen"),
+                  )
+                  ),
+                PopupMenuDivider(),
+                PopupMenuItem(
+                  value: "Logout",
+                  child: ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: Text("Logout"),
+                  )
+                  ),
+              ],
+              )
+          ],
         ),
         body: Center(
           child: InkWell(
