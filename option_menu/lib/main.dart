@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'Tabbar.dart';
+import 'inputs.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: TabBarDemo()//DrawerExample() //MyHomePage(title: 'Flutter Demo Home Page'),
+        home: InputDemo() //TabBarDemo()//DrawerExample() //MyHomePage(title: 'Flutter Demo Home Page'),
         );
   }
 }

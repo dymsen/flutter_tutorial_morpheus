@@ -26,9 +26,49 @@ class TabBarDemo extends StatelessWidget {
                   return ListTile(
                     title: Text("$t - ${list[i]}"),
                   );
-                }))
+                }
+                )
+                )
             ],
           ),
-        ));
-  }
+          bottomNavigationBar: _MyAppBar(),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => print("FAB"),
+            child: const Icon(Icons.add),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+                  )
+                  );
+            }
+          }
+          
+          class _MyAppBar extends StatelessWidget{
+
+            @override
+            Widget build(BuildContext context) {
+
+              return  BottomAppBar(
+                color: Theme.of(context).colorScheme.secondary,
+                shape: const CircularNotchedRectangle(),
+                child: IconTheme(
+                  data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  child: Row(
+                    children: [                      
+                      IconButton(
+                        tooltip: "Menü öffnen",
+                        icon: Icon(Icons.menu), 
+                        onPressed: ()=> print("Open Menu")
+                        ),
+                        IconButton(
+                        tooltip: "Suche",
+                        icon: Icon(Icons.search), 
+                        onPressed: ()=> print("Open Search")
+                        )
+                    
+                    ]
+                  ),
+                  )
+              );
+            }
 }
